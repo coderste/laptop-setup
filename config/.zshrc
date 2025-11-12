@@ -48,9 +48,6 @@ if [[ -d "/opt/homebrew/opt/perl/bin" ]]; then
 fi
 
 # PNPM (if using specific version)
-if [[ -d "/opt/homebrew/opt/pnpm@8/bin" ]]; then
-    export PATH="/opt/homebrew/opt/pnpm@8/bin:$PATH"
-fi
 
 # ================================
 # Oh My Zsh Plugins
@@ -58,7 +55,6 @@ fi
 
 plugins=(
     git
-    git-auto-fetch
     zsh-autosuggestions
     zsh-syntax-highlighting
 )
@@ -84,14 +80,6 @@ source $ZSH/oh-my-zsh.sh
 # Node Version Manager (NVM)
 # ================================
 
-export NVM_DIR="$HOME/.nvm"
-if [[ -s "$NVM_DIR/nvm.sh" ]]; then
-    source "$NVM_DIR/nvm.sh"
-fi
-if [[ -s "$NVM_DIR/bash_completion" ]]; then
-    source "$NVM_DIR/bash_completion"
-fi
-
 # ================================
 # Custom Aliases and Functions
 # ================================
@@ -112,6 +100,8 @@ alias vs="code ."
 # Development Environment Setup
 # ================================
 
+eval "$(fnm env --use-on-cd)"
+
 # Homebrew environment (if not already set)
 if [[ -f "/opt/homebrew/bin/brew" ]]; then
     eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -122,14 +112,11 @@ fi
 # ================================
 # Performance Optimizations
 # ================================
-
-# Skip global compinit for faster startup
-skip_global_compinit=1
-
-# Lazy load functions for better performance
 autoload -Uz compinit
-if [[ -n ${ZDOTDIR}/.zcompdump(#qN.mh+24) ]]; then
+if [[ -n ${HOME}/.zcompdump(#qN.mh+24) ]]; then
     compinit
 else
     compinit -C
 fi
+
+export SSH_AUTH_SOCK=~/Library/Group\ Containers/2BUA8C4S2C.com.1password/t/agent.sock

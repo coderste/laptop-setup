@@ -55,6 +55,8 @@ alias glog='git log --graph --pretty=format:"%Cred%h%Creset -%C(yellow)%d%Creset
 # Docker shortcuts
 alias d='docker'
 alias dc='docker compose'
+alias dcu='docker compose up -d'
+alias dcd='docker compose down'
 alias dps='docker ps'
 alias di='docker images'
 
@@ -133,7 +135,7 @@ alias hidefiles='defaults write com.apple.finder AppleShowAllFiles NO; killall F
 alias flushdns='sudo dscacheutil -flushcache; sudo killall -HUP mDNSResponder'
 
 # Lock screen
-alias lock='/System/Library/CoreServices/Menu\ Extras/User.menu/Contents/Resources/CGSession -suspend'
+alias lock='pmset displaysleepnow'
 
 # ================================
 # Productivity
@@ -149,9 +151,6 @@ if command -v tree >/dev/null 2>&1; then
     alias t2='tree -L 2'
     alias t3='tree -L 3'
 fi
-
-# Weather (requires curl)
-alias weather='curl wttr.in'
 
 # ================================
 # Fun Utilities
@@ -230,7 +229,7 @@ findproc() {
 }
 
 # Quick git commit and push
-gcp() {
+gcap() {
     git add .
     git commit -m "$1"
     git push
