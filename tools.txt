@@ -12,3 +12,6 @@ AWS Cli=awscli
 JQ=jq
 PNPM=pnpm
 Git=git
+Fast Node Version Manager=fnm
+Node=node
+Python=python
