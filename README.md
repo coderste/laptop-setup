@@ -76,4 +76,9 @@ This structure aligns with my `aliases` for running shortcut commands in the ter
 ![Terminal Screenshot](screenshots/terminal-ss.png)
 
 ### VS Code Screenshot
-![Terminal Screenshot](screenshots/vs-code-ss.png)
+![VS Code Screenshot](screenshots/vs-code-ss.png)
+
+### Dock
+> *I'm picky on my dock layout so this is to remember it*
+
+![Dock](screenshots/dock-ss.png)
