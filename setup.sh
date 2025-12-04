@@ -177,6 +177,32 @@ setup_neovim() {
     fi
 }
 
+setup_ghostty() {
+    log_section "Setting up Ghostty Configuration"
+    
+    local ghostty_config_dir="$HOME/.config/ghostty"
+    local ghostty_config_file="$ghostty_config_dir/config"
+    
+    # Create Ghostty config directory if it doesn't exist
+    mkdir -p "$ghostty_config_dir"
+    
+    # Backup existing config if it exists
+    if [[ -f "$ghostty_config_file" ]]; then
+        local backup_file="${ghostty_config_file}.backup.$(date +%Y%m%d_%H%M%S)"
+        log_warning "Backing up existing Ghostty config to $backup_file"
+        mv "$ghostty_config_file" "$backup_file"
+    fi
+    
+    # Copy Ghostty configuration
+    if [[ -f "config/ghostty/config" ]]; then
+        log_info "Copying Ghostty configuration..."
+        cp "config/ghostty/config" "$ghostty_config_file"
+        log_success "Ghostty configuration copied successfully"
+    else
+        log_warning "Ghostty config file not found at config/ghostty/config, skipping..."
+    fi
+}
+
 copy_config_files() {
     log_section "Copying configuration files"
     
@@ -241,7 +267,6 @@ print_manual_tasks() {
     echo "• Install Dank Mono font manually (licensing restrictions)"
     echo "• Enter licensing keys for Alfred"
     echo "• Sign into VS Code with GitHub to sync settings"
-    echo "• Add SSH key to GitHub (if not done via gh CLI)"
     echo "• Add Jira search to Firefox"
     echo "• Test Neovim setup by running 'nvim' (plugins should auto-install on first run)"
     echo ""
@@ -284,6 +309,7 @@ main() {
     install_developer_tools
     setup_zsh
     setup_neovim
+    setup_ghostty
     copy_config_files
     authenticate_github
     create_directories

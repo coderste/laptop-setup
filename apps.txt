@@ -10,3 +10,4 @@ Discord=discord
 Spotify=spotify
 Sequel Ace=sequel-ace
 Postman=postman
+Ghostty=ghostty
