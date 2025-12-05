@@ -2,7 +2,7 @@
 
 [Installation](#installation)
 
-This repo contains the code to set-up a brand new Macbook Pro with all the apps and tools I use on a day-to-day basis while coding/working.
+This repo contains the code to set-up a Macbook Pro with all the apps and tools I use on a day-to-day basis while coding/working.
 
 The `initial-setup.sh` does about 90% of the work. The rest of the work requires entering licensing keys for things like `Alfred` and then syninc our `VS Code` setting by signing in with GitHub.
 
@@ -18,27 +18,38 @@ We use the [Dank Mono Font](https://philpl.gumroad.com/l/dank-mono) but due to i
 
 ```
 # Applications Installed
-Google Chrome
-Slack
+Firefox
+Microsoft Teams
 Alfred 4
-iTerm2
+iTerm
 Visual Studio Code
 Docker
 GPG Keychain
 1Password
 Discord
 Spotify
+Sequel Ace
+Postman
 
 # Tools Installed
-Git
 ZSH
 Golang
 PHP
 GitHub CLI
-Node
 Composer
 Tig
 PHP Code Sniffer
+Yarn
+AWS Vault
+Terraform
+AWS CLI
+JQ
+PNPM
+Git
+Fast Node Version Manager (fnm)
+Python
+Bun
+
 ```
 Any application or developer tool that can be installed via `Homebrew` can be installed with this set-up script. Applications **MUST** go inside the `apps.txt` file due to how we run the `brew` command and tools **MUST** go inside the `tools.txt` file.
 

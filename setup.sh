@@ -133,12 +133,12 @@ setup_zsh() {
     
     if [[ -d "oh-my-zsh/plugins/zsh-autosuggestions" ]]; then
         log_info "Installing zsh-autosuggestions plugin..."
-        cp -R oh-my-zsh/plugins/zsh-autosuggestions "$plugin_dir/"
+        ln -sf -R oh-my-zsh/plugins/zsh-autosuggestions "$plugin_dir/"
     fi
     
     if [[ -d "oh-my-zsh/plugins/zsh-syntax-highlighting" ]]; then
         log_info "Installing zsh-syntax-highlighting plugin..."
-        cp -R oh-my-zsh/plugins/zsh-syntax-highlighting "$plugin_dir/"
+        ln -sf oh-my-zsh/plugins/zsh-syntax-highlighting "$plugin_dir/"
     fi
     
     log_success "Zsh setup complete"
@@ -167,39 +167,8 @@ setup_neovim() {
     mkdir -p "$HOME/.config"
     if git clone https://github.com/coderste/neovim-config.git "$nvim_config_dir"; then
         log_success "Neovim configuration cloned successfully"
-        
-        # Run Neovim once to install plugins (headless mode)
-        log_info "Installing Neovim plugins..."
-        nvim --headless +qa 2>/dev/null || true
-        log_success "Neovim plugins installation initiated"
     else
         log_error "Failed to clone Neovim configuration"
-    fi
-}
-
-setup_ghostty() {
-    log_section "Setting up Ghostty Configuration"
-    
-    local ghostty_config_dir="$HOME/.config/ghostty"
-    local ghostty_config_file="$ghostty_config_dir/config"
-    
-    # Create Ghostty config directory if it doesn't exist
-    mkdir -p "$ghostty_config_dir"
-    
-    # Backup existing config if it exists
-    if [[ -f "$ghostty_config_file" ]]; then
-        local backup_file="${ghostty_config_file}.backup.$(date +%Y%m%d_%H%M%S)"
-        log_warning "Backing up existing Ghostty config to $backup_file"
-        mv "$ghostty_config_file" "$backup_file"
-    fi
-    
-    # Copy Ghostty configuration
-    if [[ -f "config/ghostty/config" ]]; then
-        log_info "Copying Ghostty configuration..."
-        cp "config/ghostty/config" "$ghostty_config_file"
-        log_success "Ghostty configuration copied successfully"
-    else
-        log_warning "Ghostty config file not found at config/ghostty/config, skipping..."
     fi
 }
 
@@ -287,13 +256,20 @@ main() {
         exit 1
     fi
     
-    # Check if we're in a git repository for submodules
     if [[ ! -f ".gitmodules" ]]; then
-        log_error "This script must be run from the root of the mac-setup git repository!"
-        log_error "Make sure you cloned with: git clone --recurse-submodules https://github.com/coderste/mac-setup.git"
+        log_error "This script must be run from the root of the laptop-setup git repository!"
+        log_error "Make sure you cloned with: git clone --recurse-submodules https://github.com/coderste/laptop-setup.git"
         exit 1
     fi
-    
+
+    log_info "Initializing git submodules..."
+    if git submodule update --init --recursive; then
+        log_success "Submodules initialized successfully"
+    else
+        log_error "Failed to initialize submodules"
+        exit 1
+    fi
+ 
     # Check if required files exist
     local required_files=("apps.txt" "tools.txt")
     for file in "${required_files[@]}"; do

@@ -1,4 +1,4 @@
-ZSH=zsh
+m:q:qZSH=zsh
 Golang=go
 PHP=php
 GitHub CLI=gh
@@ -13,6 +13,5 @@ JQ=jq
 PNPM=pnpm
 Git=git
 Fast Node Version Manager=fnm
-Node=node
 Python=python
 Bun=oven-sh/bun/bun
