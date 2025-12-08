@@ -15,3 +15,5 @@ Git=git
 Fast Node Version Manager=fnm
 Python=python
 Bun=oven-sh/bun/bun
+MySQL Client=mysql-client
+Postgres Client=libpq
