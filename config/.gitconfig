@@ -6,12 +6,16 @@
     excludesFile = ~/.gitignore
     editor = nvim
     hooksPath = /Users/stephenhinett/.git-hooks
+    pager = diff-so-fancy | less --tabs=4 -RF
 
 [filter "lfs"]
     required = true
     clean = git-lfs clean -- %f
     smudge = git-lfs smudge -- %f
     process = git-lfs filter-process
+
+[interactive]
+    diffFilter = diff-so-fancy --patch
 
 [commit]
     gpgsign = true

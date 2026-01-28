@@ -57,11 +57,40 @@ Any application or developer tool that can be installed via `Homebrew` can be in
 
 Clone the repo into your `$HOME` directory.
 
-```
+```bash
 git clone --recurse-submodules https://github.com/coderste/mac-setup.git
+cd mac-setup
+./setup.sh
 ```
 
 **NB:** You need `git` installed on the environment to run this set-up because we use submodules the folders are not included when downloaded as ZIP from GitHub. Install Xcode Command Line Tools which will give you access to `git`
+
+### Optional: macOS System Preferences
+
+After running the main setup, you can optionally configure macOS system defaults:
+
+```bash
+./macos-defaults.sh
+```
+
+This will configure:
+- Faster keyboard repeat rate
+- Dock auto-hide and size
+- Finder settings (show hidden files, extensions, path bar)
+- Screenshot location and format
+- Safari developer tools
+- Text editing (disable auto-correct, smart quotes)
+- And more...
+
+### Backup Configuration Files
+
+To backup your current system configuration files back to this repo:
+
+```bash
+./backup.sh
+```
+
+This will copy your live config files from `~` back to the repo's `config/` directory, useful when you've made changes to your system and want to sync them back.
 
 ### GitHub CLI and more
 

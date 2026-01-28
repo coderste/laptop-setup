@@ -1,4 +1,4 @@
-m:q:qZSH=zsh
+ZSH=zsh
 Golang=go
 PHP=php
 GitHub CLI=gh
@@ -17,3 +17,10 @@ Python=python
 Bun=oven-sh/bun/bun
 MySQL Client=mysql-client
 Postgres Client=libpq
+Tree=tree
+Neovim=neovim
+Ripgrep=ripgrep
+Fuzzy Finder=fzf
+Bat=bat
+wget=wget
+Diff so Fancy=diff-so-fancy

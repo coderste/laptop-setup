@@ -272,7 +272,6 @@ main() {
     install_developer_tools
     setup_zsh
     setup_neovim
-    setup_ghostty
     copy_config_files
     authenticate_github
     create_directories
