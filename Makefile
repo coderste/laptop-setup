@@ -1,2 +1,2 @@
-install: 
+setup: 
 	./setup.sh

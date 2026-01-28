@@ -59,6 +59,8 @@ alias dcu='docker compose up -d'
 alias dcd='docker compose down'
 alias dps='docker ps'
 alias di='docker images'
+alias dstop='docker stop $(docker ps -q)'
+alias drm='docker rm $(docker ps -a -q)'
 
 # Laravel/PHP shortcuts
 alias art='php artisan'
@@ -112,6 +114,9 @@ alias ips="ifconfig -a | grep -o 'inet6\? \(addr:\)\?\s\?\(\(\([0-9]\+\.\)\{3\}[
 # File size and disk usage
 alias du='du -kh'
 alias df='df -kTh'
+
+# Quick Note
+alias note="nvim ~/notes/$(date +%Y-%m-%d).md"
 
 # ================================
 # Quick Edits
@@ -171,35 +176,16 @@ mkcd() {
     mkdir -p "$1" && cd "$1"
 }
 
-# Docker exec into container with bash
+# Docker exec into container with shell
 dce() {
     if [[ $# -eq 1 ]]; then
-        docker compose exec -it "$1" bash
+        docker compose exec -it "$1" sh
     else
         echo "Usage: dce <container_name>"
     fi
 }
 
 # Work-specific Docker orchestration
-unifyup() {
-    echo "Bringing up entanet-shared-docker..."
-    docker compose -f "$work/entanet-shared-docker/docker-compose.yml" up -d
-    echo "Bringing up auth..."
-    docker compose -f "$work/auth/docker-compose.yml" up -d
-    echo "Bringing up unify-service-portal..."
-    docker compose -f "$work/usp/docker-compose.yml" up -d
-    echo "All containers are up!"
-}
-
-unifydown() {
-    echo "Bringing down unify-service-portal..."
-    docker compose -f "$work/usp/docker-compose.yml" down
-    echo "Bringing down auth..."
-    docker compose -f "$work/auth/docker-compose.yml" down
-    echo "Bringing down entanet-shared-docker..."
-    docker compose -f "$work/entanet-shared-docker/docker-compose.yml" down
-    echo "All containers are down!"
-}
 
 # Extract various archive formats
 extract() {

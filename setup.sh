@@ -1,20 +1,15 @@
-# My macOS setup script
 #!/bin/bash
 
-# Exit on any error
 set -e
 
-# Color definitions
-readonly NC='\033[0m'       # Text Reset
-readonly RED='\033[0;31m'   # Red
-readonly GREEN='\033[0;32m' # Green
-readonly YELLOW='\033[0;33m' # Yellow
-readonly BLUE='\033[0;34m'  # Blue
-readonly PURPLE='\033[0;35m' # Purple
-readonly CYAN='\033[0;36m'  # Cyan
-readonly WHITE='\033[1;37m' # Bold White
-
-# Helper functions
+readonly NC='\033[0m'
+readonly RED='\033[0;31m'
+readonly GREEN='\033[0;32m'
+readonly YELLOW='\033[0;33m'
+readonly BLUE='\033[0;34m'
+readonly PURPLE='\033[0;35m'
+readonly CYAN='\033[0;36m'
+readonly WHITE='\033[1;37m'
 log_info() {
     echo -e "${WHITE}$1${NC}"
 }
@@ -43,7 +38,6 @@ app_exists() {
     [[ -d "/Applications/${1}.app" ]]
 }
 
-# Main functions
 install_homebrew() {
     log_section "Setting up Homebrew"
     
@@ -53,8 +47,6 @@ install_homebrew() {
     else
         log_info "Installing Homebrew..."
         /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-        
-        # Add Homebrew to PATH for both Intel and Apple Silicon Macs
         if [[ -f "/opt/homebrew/bin/brew" ]]; then
             echo 'eval "$(/opt/homebrew/bin/brew shellenv)"' >> ~/.zprofile
             eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -75,7 +67,6 @@ install_applications() {
     fi
     
     while IFS='=' read -r app brew_name || [[ -n "$app" ]]; do
-        # Skip empty lines and comments
         [[ -z "$app" || "$app" =~ ^#.*$ ]] && continue
         
         if app_exists "$app"; then
@@ -100,7 +91,6 @@ install_developer_tools() {
     fi
     
     while IFS='=' read -r name tool || [[ -n "$name" ]]; do
-        # Skip empty lines and comments
         [[ -z "$name" || "$name" =~ ^#.*$ ]] && continue
         
         if brew list "$tool" &>/dev/null; then
@@ -118,16 +108,14 @@ install_developer_tools() {
 
 setup_zsh() {
     log_section "Setting up Zsh and Oh My Zsh"
-    
-    # Install Oh My Zsh if not present
+
     if [[ ! -d "$HOME/.oh-my-zsh" ]]; then
         log_info "Installing Oh My Zsh..."
         RUNZSH=no sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
     else
         log_info "Oh My Zsh already installed"
     fi
-    
-    # Install custom plugins
+
     local plugin_dir="$HOME/.oh-my-zsh/custom/plugins"
     mkdir -p "$plugin_dir"
     
@@ -146,23 +134,20 @@ setup_zsh() {
 
 setup_neovim() {
     log_section "Setting up Neovim Configuration"
-    
-    # Check if Neovim is installed
+
     if ! command_exists nvim; then
         log_info "Installing Neovim via Homebrew..."
         brew install neovim
     fi
-    
+
     local nvim_config_dir="$HOME/.config/nvim"
-    
-    # Backup existing config if it exists
+
     if [[ -d "$nvim_config_dir" ]]; then
         local backup_dir="${nvim_config_dir}.backup.$(date +%Y%m%d_%H%M%S)"
         log_warning "Backing up existing Neovim config to $backup_dir"
         mv "$nvim_config_dir" "$backup_dir"
     fi
-    
-    # Clone your Neovim configuration
+
     log_info "Cloning Neovim configuration..."
     mkdir -p "$HOME/.config"
     if git clone https://github.com/coderste/neovim-config.git "$nvim_config_dir"; then
@@ -175,7 +160,7 @@ setup_neovim() {
 copy_config_files() {
     log_section "Copying configuration files"
     
-    local config_files=(".zshrc" ".gitconfig" ".gitignore" ".aliases")
+    local config_files=(".zprofile" ".zshrc" ".gitconfig" ".gitconfig-personal" ".gitignore" ".aliases")
     
     for file in "${config_files[@]}"; do
         if [[ -f "config/$file" ]]; then
@@ -185,14 +170,20 @@ copy_config_files() {
             log_warning "Config file $file not found, skipping..."
         fi
     done
-    
-    # Copy AWS config
+
     if [[ -f "config/.aws" ]]; then
         log_info "Copying AWS configuration..."
         mkdir -p "$HOME/.aws"
         cp "config/.aws" "$HOME/.aws/config"
     fi
-    
+
+    if [[ -d ".git-hooks" ]]; then
+        log_info "Copying git hooks..."
+        cp -R ".git-hooks" "$HOME/"
+    else
+        log_warning "Git hooks directory not found, skipping..."
+    fi
+
     log_success "Configuration files copied"
 }
 
@@ -247,10 +238,8 @@ print_manual_tasks() {
 # Main execution
 main() {
     log_info "Starting Mac Development Environment Setup"
-    echo -e "${CYAN}This script will set up your Mac for development work.${NC}"
     echo ""
-    
-    # Check if running on macOS
+
     if [[ "$OSTYPE" != "darwin"* ]]; then
         log_error "This script is designed for macOS only!"
         exit 1
@@ -269,8 +258,7 @@ main() {
         log_error "Failed to initialize submodules"
         exit 1
     fi
- 
-    # Check if required files exist
+
     local required_files=("apps.txt" "tools.txt")
     for file in "${required_files[@]}"; do
         if [[ ! -f "$file" ]]; then
@@ -278,8 +266,7 @@ main() {
             exit 1
         fi
     done
-    
-    # Run setup functions
+
     install_homebrew
     install_applications
     install_developer_tools
@@ -292,5 +279,4 @@ main() {
     print_manual_tasks
 }
 
-# Run main function
 main "$@"
