@@ -4,6 +4,7 @@ Alfred 4=alfred
 iTerm=iterm2
 Visual Studio Code=visual-studio-code
 Docker=docker
+Podman=podman
 GPG Keychain=gpg-suite
 1Password=1password
 Discord=discord
